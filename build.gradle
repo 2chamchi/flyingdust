@@ -11,10 +11,12 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+//apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
+
 war{
 	baseName = 'flyingdust'
 }
@@ -26,14 +28,23 @@ repositories {
 	mavenCentral()
 }
 
+
 sourceSets {
 	main {
+		java.outputDir = file("$buildDir/classes")
 		resources {
 			srcDirs=["src/main/resources"]
 		}
 	}
 }
 
+jar{
+	manifest {
+		attributes(
+				'Main-Class' : 'FlyingDustApplication'
+		)
+	}
+}
 
 dependencies {
 
@@ -41,7 +52,7 @@ dependencies {
 	compile ('org.springframework.boot:spring-boot-starter-web')
 
 	/* embedded-tomcat */
-	providedRuntime ('org.springframework.boot:spring-boot-starter-tomcat')
+	compile ('org.springframework.boot:spring-boot-starter-tomcat')
 
 	/* http client library */
 	compile ('com.squareup.okhttp3:okhttp:3.10.0')
